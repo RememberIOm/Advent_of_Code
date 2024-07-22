@@ -1,24 +1,32 @@
-def get_cycle(ghost, graph, route):
+from math import lcm
+
+
+def get_cycle_len(ghost, graph, route):
+    steps = 0
     cur_node = ghost
 
-    for route_elem in route:
-        cur_node = graph[cur_node][0 if route_elem == "L" else 1]
+    while cur_node[-1] != "Z":
+        cur_move = route[steps % len(route)]
+        cur_node = graph[cur_node][0 if cur_move == "L" else 1]
+        steps += 1
 
-    cycle = [cur_node]
+    # input 계산 결과 시작 지점부터 첫 Z 노드까지의 거리와
+    # Z 노드부터 다시 Z 노드까지 도달하는 거리가 동일함
+    # 따라서 시작 지점부터 첫 Z 노드까지의 거리만 계산하면 됨
 
-    while cycle[0] != cur_node or len(cycle) == 1:
-        for route_elem in route:
-            cur_node = graph[cur_node][0 if route_elem == "L" else 1]
-            cycle.append(cur_node)
+    # z_node = cur_node
+    # z_node_step = steps
 
-    return tuple(cycle[:-1])
+    # while cur_node != z_node or steps == z_node_step:
+    #     cur_move = route[steps % len(route)]
+    #     cur_node = graph[cur_node][0 if cur_move == "L" else 1]
+    #     steps += 1
 
+    # cycle_step = steps - z_node_step
 
-def get_z_in_cycle(ghost_cycle):
-    return (
-        list(idx for idx, node in enumerate(ghost_cycle) if node[-1] == "Z"),
-        len(ghost_cycle),
-    )
+    # return z_node_step, cycle_step
+
+    return steps
 
 
 def solution(input_data):
@@ -32,12 +40,9 @@ def solution(input_data):
         if line.split(" = ")[0][-1] == "A":
             ghosts.append(line.split(" = ")[0])
 
-    ghosts_cycle = tuple(map(lambda ghost: get_cycle(ghost, graph, route), ghosts))
-    ghosts_z_in_cycle = tuple(
-        map(lambda ghost_cycle: get_z_in_cycle(ghost_cycle), ghosts_cycle)
-    )
+    ghosts_cycle_len = map(lambda ghost: get_cycle_len(ghost, graph, route), ghosts)
 
-    # TODO: Fix this
+    return lcm(*ghosts_cycle_len)
 
 
 input_file = "input.txt"
