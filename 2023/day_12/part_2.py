@@ -1,49 +1,46 @@
 def cal_case_num(spring):
     broken_springs, conditions = spring
+
+    # dp 테이블을 만들기 위해 맨 앞에 0을 추가
+    broken_springs = "_" + broken_springs
+    conditions = (0,) + conditions
+
     broken_springs_len, conditions_len = len(broken_springs), len(conditions)
 
-    conditions_prefix_sum = [0] * (conditions_len + 1)
-    for i in range(1, conditions_len + 1):
-        conditions_prefix_sum[i] = conditions_prefix_sum[i - 1] + conditions[i - 1]
+    # conditions의 누적합
+    conditions_prefix_sum = [0] * conditions_len
+    for i, condition in enumerate(conditions):
+        conditions_prefix_sum[i] = conditions_prefix_sum[i - 1] + condition
 
-    dp_table = [[0] * (broken_springs_len + 1) for _ in range(conditions_len + 1)]
+    dp_table = tuple([0] * broken_springs_len for _ in range(conditions_len))
     dp_table[0][0] = 1
 
-    for i in range(conditions_len + 1):
-        cur_condition = conditions[i - 1] if i > 0 else 0
-        cur_condition_prefix_sum = conditions_prefix_sum[i]
-
-        for j in range(1, broken_springs_len + 1):
-            cur_broken_spring = broken_springs[j - 1]
-
-            # 누적합에 의한 조건 확인
-            if j < cur_condition_prefix_sum + i - 1:
+    for i, (condition, condition_prefix_sum) in enumerate(
+        zip(conditions, conditions_prefix_sum)
+    ):
+        for j, broken_spring in enumerate(broken_springs[1:], 1):
+            # 누적합에 의한 조건 확인 (#이 들어가는데 필요한 최소 길이)
+            if j < condition_prefix_sum + i - 1:
                 continue
 
-            if cur_broken_spring != "#":
+            if broken_spring != "#":
                 dp_table[i][j] += dp_table[i][j - 1]
 
-            if cur_broken_spring != ".":
+            if broken_spring != ".":
                 # condition이 0인 경우
-                if cur_condition == 0:
+                if condition == 0:
                     continue
 
-                # (j - cur_condition + 1, j - 1)만큼의 문자 중 .이 있는 경우 (현재 condition을 만족할 수 없는 경우)
-                if any(
-                    broken_springs[k - 1] == "."
-                    for k in range(j - cur_condition + 1, j)
-                ):
+                # [j - condition + 1, j]만큼의 문자 중 .이 있는 경우 (현재 condition을 만족할 수 없는 경우)
+                if any(broken_springs[k] == "." for k in range(j - condition + 1, j)):
                     continue
 
-                # j - cur_condition 문자가 #일 경우 (경계가 될 수 없는 경우)
-                if (
-                    0 <= j - 1 - cur_condition
-                    and broken_springs[j - 1 - cur_condition] == "#"
-                ):
+                # j - condition 문자가 #일 경우 (#이 분리될 수 없는 경우)
+                if 0 <= j - condition and broken_springs[j - condition] == "#":
                     continue
 
-                if j - cur_condition - 1 >= 0:
-                    dp_table[i][j] += dp_table[i - 1][j - cur_condition - 1]
+                if j - condition - 1 >= 0:
+                    dp_table[i][j] += dp_table[i - 1][j - condition - 1]
                 else:
                     dp_table[i][j] += 1
 
