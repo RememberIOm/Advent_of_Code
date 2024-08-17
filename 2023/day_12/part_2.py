@@ -12,6 +12,12 @@ def cal_case_num(spring):
     for i, condition in enumerate(conditions):
         conditions_prefix_sum[i] = conditions_prefix_sum[i - 1] + condition
 
+    # 연속된 #의 개수를 저장
+    streaks = [0] * broken_springs_len
+    for i, broken_spring in enumerate(broken_springs):
+        streaks[i] = streaks[i - 1] + 1 if broken_spring != "." else 0
+
+    # dp 테이블 초기화
     dp_table = tuple([0] * broken_springs_len for _ in range(conditions_len))
     dp_table[0][0] = 1
 
@@ -28,15 +34,13 @@ def cal_case_num(spring):
 
             if broken_spring != ".":
                 # condition이 0인 경우
-                if condition == 0:
-                    continue
-
                 # [j - condition + 1, j]만큼의 문자 중 .이 있는 경우 (현재 condition을 만족할 수 없는 경우)
-                if any(broken_springs[k] == "." for k in range(j - condition + 1, j)):
-                    continue
-
                 # j - condition 문자가 #일 경우 (#이 분리될 수 없는 경우)
-                if 0 <= j - condition and broken_springs[j - condition] == "#":
+                if (
+                    condition == 0
+                    or condition > streaks[j]
+                    or (0 <= j - condition and broken_springs[j - condition] == "#")
+                ):
                     continue
 
                 if j - condition - 1 >= 0:
