@@ -1,68 +1,87 @@
-from collections import deque
+from multiprocessing import pool
+from tqdm import tqdm
+
+DIRECTIONS = "^>v<"
+DIRECTIONS_MAP = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
 
-def is_loop(input_data):
-    directions = "^>v<"
-    directions_map = {
-        "^": (-1, 0),
-        ">": (0, 1),
-        "v": (1, 0),
-        "<": (0, -1),
-    }
+def check_loop(args):
+    grid, cur_x, cur_y, start_x, start_y, start_direction = args
 
-    for i in range(len(input_data)):
-        for j in range(len(input_data[i])):
-            if input_data[i][j] in directions:
-                x, y = i, j
-                direction = input_data[i][j]
-                break
+    grid[cur_y][cur_x] = "#"
 
-    visited_positions = {(x, y)}
-    direction_change_count = 0
-    THRESHOLD = 1000
+    result = is_loop(grid, start_x, start_y, start_direction)
 
-    while 0 <= x < len(input_data) and 0 <= y < len(input_data[x]):
-        if input_data[x][y] != "#":
-            visited_positions.add((x, y))
+    grid[cur_y][cur_x] = "."
 
-            x += directions_map[direction][0]
-            y += directions_map[direction][1]
+    return result
+
+
+def is_loop(grid, start_x, start_y, start_direction):
+    x, y, direction = start_x, start_y, start_direction
+
+    visited_positions = set()
+
+    rows, cols = len(grid), len(grid[0])
+
+    while 0 <= x < cols and 0 <= y < rows:
+        if grid[y][x] != "#":
+            dx, dy = DIRECTIONS_MAP[direction]
+            x += dx
+            y += dy
         else:
-            x -= directions_map[direction][0]
-            y -= directions_map[direction][1]
+            dx, dy = DIRECTIONS_MAP[direction]
+            x -= dx
+            y -= dy
 
-            direction = directions[(directions.index(direction) + 1) % 4]
-            direction_change_count += 1
+            current_state = (x, y, direction)
 
-            x += directions_map[direction][0]
-            y += directions_map[direction][1]
-
-            if direction_change_count == THRESHOLD:
+            if current_state in visited_positions:
                 return True
+
+            visited_positions.add(current_state)
+
+            direction = (direction + 1) % 4
+
+            dx, dy = DIRECTIONS_MAP[direction]
+            x += dx
+            y += dy
 
     return False
 
 
 def solution(input_data):
-    input_data = list(input_data)
+    data_grid = [list(row) for row in input_data]
 
-    loop_num = 0
+    start_x, start_y, start_direction = None, None, None
 
-    for i in range(len(input_data)):
-        for j in range(len(input_data[i])):
-            if input_data[i][j] == ".":
-                input_data[i] = input_data[i][:j] + "#" + input_data[i][j + 1 :]
+    for cur_y, row in enumerate(data_grid):
+        for cur_x, cell in enumerate(row):
+            if cell in DIRECTIONS:
+                start_x, start_y, start_direction = cur_x, cur_y, DIRECTIONS.index(cell)
+                break
+        if start_x is not None:
+            break
 
-                loop_num += is_loop(input_data)
+    dot_cells = [
+        (x, y)
+        for y, row in enumerate(data_grid)
+        for x, cell in enumerate(row)
+        if cell == "."
+    ]
 
-                input_data[i] = input_data[i][:j] + "." + input_data[i][j + 1 :]
+    tasks = [(data_grid, x, y, start_x, start_y, start_direction) for x, y in dot_cells]
 
-    return loop_num
+    with pool.Pool() as p:
+        results = list(tqdm(p.imap(check_loop, tasks), total=len(tasks)))
+
+    return sum(results)
 
 
-INPUT_FILE_PATH = "input.txt"
+if __name__ == "__main__":
+    INPUT_FILE_PATH = "input.txt"
 
-with open(INPUT_FILE_PATH, "r") as file:
-    data = tuple(map(str.rstrip, file.readlines()))
+    with open(INPUT_FILE_PATH, "r") as file:
+        data = [line.rstrip() for line in file]
 
-print(solution(data))
+    print(solution(data))
