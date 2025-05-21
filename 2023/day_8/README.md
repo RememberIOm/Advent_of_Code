@@ -58,12 +58,4 @@ Part 2에서는 여러 "유령"이 동시에 네트워크를 탐색합니다. �
     *   모든 유령이 동시에 'Z' 노드에 위치하려면, 각 유령의 주기의 최소공배수(LCM)만큼의 단계가 필요합니다.
     *   `math.lcm(*ghosts_cycle_len)`를 사용하여 이 LCM 값을 계산하고 반환합니다.
 
-이 접근 방식은 각 유령의 경로가 독립적인 주기를 가지며, 모든 주기가 동시에 맞아떨어지는 지점을 찾는 문제로 귀결되기 때문에 유효합니다.The `README.md` file for `2023/day_8/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1:** Navigates a network map based on a sequence of 'L'/'R' instructions, starting from "AAA" and counting steps until "ZZZ" is reached. The instruction sequence is repeated if necessary.
--   **Part 2:** Multiple "ghosts" start simultaneously at all nodes ending in 'A'. They follow the same instructions. The goal is to find when all ghosts are simultaneously on nodes ending in 'Z'. This is solved by:
-    1.  Finding the number of steps for each individual ghost to reach a node ending in 'Z'. The problem's structure implies this step count is also the cycle length for that ghost to reach a 'Z' node again.
-    2.  Calculating the Least Common Multiple (LCM) of these step counts for all ghosts.
-
-I have now created the `2023/day_8/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+이 접근 방식은 각 유령의 경로가 독립적인 주기를 가지며, 모든 주기가 동시에 맞아떨어지는 지점을 찾는 문제로 귀결되기 때문에 유효합니다.

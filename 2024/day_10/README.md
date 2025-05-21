@@ -43,14 +43,4 @@
 4.  **결과 반환**:
     *   모든 `start_points`에 대한 처리가 완료된 후, 최종 `end_point_count` 값을 반환합니다.
 
-이 코드는 각 높이 0 지점에서 시작하여, 높이가 정확히 1씩 증가하는 모든 가능한 경로를 탐색하고, 그중 높이 9에 도달하는 경로의 수를 세는 방식으로 동작합니다.The `README.md` file for `2024/day_10/` did not exist.
-I have read and analyzed the solution files `part_1.py` and `part_2.py` and found them to be identical.
-
-The logic involves:
-1.  Parsing a grid of heights, identifying all starting points (height 0).
-2.  For each starting point, performing a BFS-like traversal.
-3.  A path can extend from a current point to an adjacent point if the adjacent point's height is exactly 1 greater than the current point's height.
-4.  Counting how many such paths terminate at a cell with height 9.
-5.  Summing these counts for all starting points.
-
-I have now created the `2024/day_10/README.md` file with a detailed explanation of this common solution in Korean, including problem description, algorithmic approach, and markdown formatting. Since both Python files are the same, the explanation covers both under a "Part 1 및 Part 2 공통" heading.
+이 코드는 각 높이 0 지점에서 시작하여, 높이가 정확히 1씩 증가하는 모든 가능한 경로를 탐색하고, 그중 높이 9에 도달하는 경로의 수를 세는 방식으로 동작합니다.

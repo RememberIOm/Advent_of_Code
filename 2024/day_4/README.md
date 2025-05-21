@@ -63,16 +63,4 @@ Part 2에서는 주어진 문자 그리드에서 특정 3x3 "XMAS" 패턴의 총
     *   각 중앙 위치 `(i, j)`에 대해, 해당 위치를 중심으로 하는 3x3 블록 `block`을 추출합니다.
         *   `block = (input_data[i-1][j-1:j+2], input_data[i][j-1:j+2], input_data[i+1][j-1:j+2])`
     *   추출된 `block`에 대해 `is_xmas(block)` 함수를 호출하고, 그 결과를 `result`에 더합니다.
-    *   모든 가능한 3x3 블록을 확인한 후 최종 `result`를 반환합니다.The `README.md` file for `2024/day_4/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1:** Counts overlapping occurrences of "XMAS" (and its reverse "SAMX") in a character grid. The search includes horizontal, vertical, and both diagonal directions.
-    -   `count_overlapping_occurrences`: Uses regex `(?=XMAS)` for counting.
-    -   `get_diagonals`: Creates padded versions of the grid to extract diagonal strings by transposing (`zip(*...)`).
-    -   `solution`: Collects all lines (horizontal, vertical, two sets of diagonals), and for each line and its reverse, counts "XMAS" occurrences.
-
--   **Part 2:** Counts specific 3x3 "XMAS" patterns in the grid.
-    -   `is_xmas(block)`: Checks if a 3x3 `block` forms the pattern: center is 'A', and the four corners (concatenated in order: top-left, top-right, bottom-left, bottom-right) form one of "MMSS", "SSMM", "MSMS", or "SMSM".
-    -   `solution`: Iterates through all possible 3x3 block center positions, extracts each block, and sums the results of `is_xmas(block)`.
-
-I have now created the `2024/day_4/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+    *   모든 가능한 3x3 블록을 확인한 후 최종 `result`를 반환합니다.

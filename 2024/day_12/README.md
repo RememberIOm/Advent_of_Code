@@ -48,15 +48,4 @@
         *   반환된 가격을 `price` 리스트에 추가합니다.
     *   `price` 리스트에 저장된 모든 영역의 가격들의 총합 (`sum(price)`)을 반환합니다.
 
-이 알고리즘은 그리드의 각 셀을 한 번씩만 방문하여, 동일한 문자로 이루어진 각 연결 영역을 식별하고, 각 영역의 크기와 경계 수를 기반으로 가격을 계산한 뒤, 이들의 총합을 구하는 방식으로 동작합니다.The `README.md` file for `2024/day_12/` did not exist.
-I have read and understood the logic for `part_1.py`.
-
-The problem solved by `part_1.py` is:
-1.  Parse a grid of characters.
-2.  Iterate through each cell of the grid. If a cell hasn't been visited yet:
-    a.  Perform a BFS/flood-fill starting from this cell to find all connected cells with the same character. This forms an "area". Mark all cells in this area as visited (globally).
-    b.  During the BFS, identify all "edge" cells: cells that are adjacent (4-directionally) to the area but have a different character.
-    c.  Calculate a "price" for this area as `(number of cells in the area) * (number of edge cells)`.
-3.  Sum the prices calculated for all such distinct areas in the grid.
-
-I have now created the `2024/day_12/README.md` file with a detailed explanation of this solution in Korean, including problem description, algorithmic approach, and markdown formatting. Since only `part_1.py` was provided, the README addresses only Part 1.
+이 알고리즘은 그리드의 각 셀을 한 번씩만 방문하여, 동일한 문자로 이루어진 각 연결 영역을 식별하고, 각 영역의 크기와 경계 수를 기반으로 가격을 계산한 뒤, 이들의 총합을 구하는 방식으로 동작합니다.

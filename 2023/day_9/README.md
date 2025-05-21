@@ -64,12 +64,4 @@ Part 2에서는 각 숫자 시퀀스(history)에 대해 이전 값을 예측해�
 2.  **`solution(input_data)` 함수**:
     *   입력 데이터를 Part 1과 동일하게 파싱하여 `histories` 튜플을 생성합니다.
     *   각 `history`에 대해 `get_prev_history` 함수를 호출하여 예측된 이전 값을 계산합니다.
-    *   모든 예측된 값들의 합을 반환합니다.The `README.md` file for `2023/day_9/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Shared Logic:** Both parts use `get_bottom(history)` to calculate differences between adjacent elements and `get_bottoms(history)` to create a list of these difference sequences down to an all-zero sequence.
--   **Part 1 (`get_next_history`):** Extrapolates the *next* value in a history by summing the last elements of all difference sequences.
--   **Part 2 (`get_prev_history`):** Extrapolates the *previous* value in a history by calculating an alternating sum of the first elements of all difference sequences (`bottoms[0][0] - bottoms[1][0] + bottoms[2][0] - ...`).
--   The `solution` functions in both parts parse the input histories and sum the results of their respective extrapolation functions.
-
-I have now created the `2023/day_9/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+    *   모든 예측된 값들의 합을 반환합니다.

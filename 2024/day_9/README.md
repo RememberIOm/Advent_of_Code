@@ -78,17 +78,4 @@ Part 2는 Part 1과 유사한 목표(압축 해제, 조각 모음, 체크섬 계
     *   `packed_data`를 파싱합니다.
     *   `data_to_unpacked_block`을 호출하여 블록들을 얻습니다.
     *   `defragment_blocks`를 호출하여 조각 모음된 최종 데이터 리스트를 얻습니다.
-    *   `compute_checksum`을 호출하여 체크섬을 계산하고 반환합니다.The `README.md` file for `2024/day_9/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1:**
-    1.  `unpack_data`: Expands a "packed" numerical input (alternating counts for filled values [0, 1, 2...] and '.' for empty) into a flat list.
-    2.  `defraging`: Defragments this list by moving all non-'.' elements left and '.' elements right using a two-pointer/deque approach for swapping.
-    3.  `get_checksum`: Calculates `sum(value * index)` for all filled cells in the defragmented list *until the first '.' is encountered*.
-
--   **Part 2:**
-    1.  `data_to_unpacked_block`: Converts packed data into a list of `filled_blocks` `(value, length, original_start_index)` and `empty_blocks` `(".", length, original_start_index)`.
-    2.  `defragment_blocks`: Performs a more complex, block-based defragmentation. It iterates through empty blocks (leftmost first) and tries to fill them with suitable filled blocks (rightmost available first that fit length and position criteria). When a filled block is moved, its original space is conceptually turned into a new empty block (the code adds a representation of this to the `empty_blocks` list, which can grow and seems to be re-evaluated). After all moves, it reconstructs a flat list from the final state of all blocks sorted by their new indices.
-    3.  `compute_checksum`: Calculates `sum(value * index)` for *all* non-'.' cells in the final defragmented list (does not stop at the first '.').
-
-I have now created the `2024/day_9/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting. I've highlighted the differences in defragmentation and checksum calculation between the two parts.
+    *   `compute_checksum`을 호출하여 체크섬을 계산하고 반환합니다.

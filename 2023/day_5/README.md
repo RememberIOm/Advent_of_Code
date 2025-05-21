@@ -85,10 +85,4 @@ Part 2는 Part 1과 유사하지만, 초기 시드가 개별 번호가 아닌 �
         *   규칙의 소스 범위 이후 부분 (겹치지 않음) -> `unprocessed_seed`에 추가.
     *   변환된 범위들의 리스트 (`processed_seed`)와 이 규칙에 의해 변환되지 않은 부분들의 리스트 (`unprocessed_seed`)를 반환합니다.
 
-이 범위 기반 처리 방식은 Part 2에서 발생할 수 있는 엄청난 수의 개별 시드를 효율적으로 다룰 수 있게 해줍니다.The `README.md` file for `2023/day_5/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1** processes individual seed numbers through a series of mapping layers to find the minimum final location. Each seed is mapped by the first matching rule in a layer or remains unchanged if no rule applies.
--   **Part 2** processes ranges of seed numbers. It transforms these ranges through the mapping layers. If a range overlaps with a mapping rule, it can be split into multiple parts: some mapped, some unmapped (which are then checked against subsequent rules in the same layer or passed through if no rules match). The goal is to find the minimum start of any final location range.
-
-I have now created the `2023/day_5/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches for individual seed processing (Part 1) and range processing (Part 2), and markdown formatting.
+이 범위 기반 처리 방식은 Part 2에서 발생할 수 있는 엄청난 수의 개별 시드를 효율적으로 다룰 수 있게 해줍니다.

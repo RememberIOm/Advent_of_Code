@@ -60,16 +60,4 @@ Part 2는 Part 1과 유사하지만, 사용할 수 있는 연산자에 '|'(이�
 2.  **`solution(input_data)` 함수**:
     *   Part 1의 `solution` 함수와 동일합니다. 입력 파싱 후, Part 2 버전의 `check_equtaion` 함수를 사용하여 풀 수 있는 방정식을 필터링하고, 그 LHS 값들의 합을 반환합니다.
 
-이 문제의 핵심은 `itertools.product`를 사용하여 가능한 모든 연산자 순열을 생성하고, 각 순열에 따라 RHS를 계산하여 LHS와 일치하는지 확인하는 완전 탐색(brute-force) 접근 방식입니다.The `README.md` file for `2024/day_7/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Shared Logic:** Both parts parse input lines of the form "LHS_value: N1 N2 N3..." into a target integer (LHS) and a list of numbers (RHS). They then try to find if a sequence of operators, when inserted between the RHS numbers and evaluated left-to-right, can produce the LHS value. If so, the LHS value is added to a running sum.
-
--   **Part 1:**
-    -   `check_equtaion`: Tries all combinations of `+` and `*` operators between the RHS numbers.
-    -   If any combination results in the LHS value, the equation is considered solvable.
-
--   **Part 2:**
-    -   `check_equtaion`: Similar to Part 1, but includes a third operator `|` (concatenate, e.g., `A | B` becomes `int(str(A) + str(B))`). It tries all combinations of `+`, `*`, and `|`.
-
-I have now created the `2024/day_7/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches (brute-forcing operator combinations with `itertools.product`), and markdown formatting. I also noted the misspelling of "equation" in the function names within the code.
+이 문제의 핵심은 `itertools.product`를 사용하여 가능한 모든 연산자 순열을 생성하고, 각 순열에 따라 RHS를 계산하여 LHS와 일치하는지 확인하는 완전 탐색(brute-force) 접근 방식입니다.

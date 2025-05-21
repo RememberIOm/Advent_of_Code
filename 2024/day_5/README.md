@@ -66,22 +66,4 @@ Part 2에서는 각 페이지에 대해, 해당 페이지의 요소들만으로 
             *   `sorted_page` (위상 정렬된 결과)의 중앙값 `int(sorted_page[len(sorted_page) // 2])`을 찾아 `invalid_pages_median_sum`에 더합니다. (중앙값 계산 시 정수로 변환).
     *   최종 `invalid_pages_median_sum`을 반환합니다.
 
-**주의**: Part 2의 `sorted_page != list(page)` 비교는 `sorted_page`가 `page`의 부분집합일 수 있고 요소 타입(하나는 문자열 리스트, 하나는 문자열 튜플)이 다르기 때문에, 이 비교가 의도한 대로 "페이지가 위상 정렬 순서를 따르지 않는 경우"를 정확히 잡아내는지에 대한 추가적인 분석이 필요할 수 있습니다. 현재 설명은 코드의 문자 그대로의 동작을 기반으로 합니다.The `README.md` file for `2024/day_5/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1:**
-    -   Parses ordering rules (A must come before B) and pages (sequences of numbers).
-    -   `is_valid_ordering`: Checks if a page adheres to all global ordering rules. A page is invalid if any rule `A|B` is violated (B appears before A in the page).
-    -   The solution filters for valid pages and sums their median elements.
-
--   **Part 2:**
-    -   `topological_sort`: Performs a topological sort on a given set of rules.
-    -   For each page:
-        1.  Filters global rules to get those relevant to the current page (both elements of a rule must be in the page).
-        2.  Performs a topological sort using these filtered rules. This `sorted_page` contains only elements that were part of the filtered rules.
-        3.  It then compares this `sorted_page` (list of strings from topo sort) with the original `page` (converted to a list of strings).
-        4.  If `sorted_page != list(page)`, it considers the page "invalid" in this context and adds the median of `sorted_page` (the topologically sorted elements) to a sum.
-    -   The sum of these medians (from "invalid" pages) is the result.
-    -   Elements are treated as strings during rule processing and topological sort, and only the median is converted to an integer.
-
-I have now created the `2024/day_5/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting. I've also added a note about the potential nuance in Part 2's comparison logic.
+**주의**: Part 2의 `sorted_page != list(page)` 비교는 `sorted_page`가 `page`의 부분집합일 수 있고 요소 타입(하나는 문자열 리스트, 하나는 문자열 튜플)이 다르기 때문에, 이 비교가 의도한 대로 "페이지가 위상 정렬 순서를 따르지 않는 경우"를 정확히 잡아내는지에 대한 추가적인 분석이 필요할 수 있습니다. 현재 설명은 코드의 문자 그대로의 동작을 기반으로 합니다.

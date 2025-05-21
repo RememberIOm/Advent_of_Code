@@ -62,11 +62,4 @@ Part 2에서는 입력 형식이 Part 1과 동일하지만, 해석 방식이 다
     *   이렇게 얻은 단일 `time`과 `distance` 값을 사용하여 `cal_win(time, distance)` 함수를 호출합니다.
     *   `cal_win` 함수가 반환하는 값 (이 단일 장기 경주에서 이길 수 있는 방법의 수)이 최종 답이 됩니다.
 
-핵심적인 경주 승리 조건 계산 로직(`cal_win` 함수)은 Part 1과 Part 2에서 동일하게 사용되며, 입력 값을 어떻게 해석하여 이 함수에 전달하는지만 다릅니다.The `README.md` file for `2023/day_6/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   The core logic in `cal_win(time, distance)` is shared: it iterates through all possible button press durations (`push`) from `0` to `time-1` and counts how many durations result in `(time - push) * push > distance`.
--   **Part 1** parses multiple race times and distances from the input, calculates the number of ways to win for each race using `cal_win`, and then multiplies these numbers together.
--   **Part 2** parses the time and distance lines by concatenating the numbers to form a single large time and a single large distance, then calls `cal_win` once for this single long race.
-
-I have now created the `2023/day_6/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+핵심적인 경주 승리 조건 계산 로직(`cal_win` 함수)은 Part 1과 Part 2에서 동일하게 사용되며, 입력 값을 어떻게 해석하여 이 함수에 전달하는지만 다릅니다.

@@ -68,17 +68,4 @@ Part 2는 Part 1과 규칙이 유사하지만, 'J' 카드가 조커(Joker)로 �
     *   Part 1과 동일한 방식으로 두 손의 카드를 순서대로 비교합니다.
     *   단, `high_card_dict`에서 'J' 카드의 값이 1로 설정되어, 다른 모든 숫자/문자 카드보다 약하게 취급됩니다 (A:14, K:13, ..., T:10, ..., 2:2, J:1).
 
-나머지 `solution` 함수의 구조와 총 상금 계산 방식은 Part 1과 동일합니다. 조커 규칙의 적용으로 인해 `card_power`와 `high_card_comp` 함수 내부의 로직만 변경됩니다.The `README.md` file for `2023/day_7/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Shared Structure:** Both parts rank poker-like hands. They group hands by primary type (e.g., Five of a Kind, Full House), then sort within those groups using a secondary rule (high card comparison from left to right). The final list is ordered from weakest to strongest hand, and total winnings are calculated as `sum(rank * bid)`.
-
--   **Part 1:** Standard poker hand evaluation. 'J' is a normal Jack.
-    -   `card_power`: Counts card frequencies to determine hand type (Five of a kind, Four of a kind, etc.).
-    -   `high_card_comp`: Compares cards A > K > Q > J > T > ... > 2.
-
--   **Part 2:** 'J' cards are Jokers.
-    -   `card_power`: Jokers are used to form the best possible hand type. The count of Jokers is added to the count of the most frequent non-Joker card (or forms a group of Jokers if all cards are Jokers).
-    -   `high_card_comp`: For tie-breaking, 'J' is the weakest individual card (A > K > ... > 2 > J).
-
-I have now created the `2023/day_7/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+나머지 `solution` 함수의 구조와 총 상금 계산 방식은 Part 1과 동일합니다. 조커 규칙의 적용으로 인해 `card_power`와 `high_card_comp` 함수 내부의 로직만 변경됩니다.

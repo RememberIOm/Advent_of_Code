@@ -87,17 +87,4 @@ Part 2는 Part 1과 동일한 기본 문제를 다루지만, 입력이 "펼쳐�
 3.  **결과 집계**:
     *   펼쳐진 모든 입력에 대해 `cal_case_num`을 호출하고 그 결과를 합산합니다.
 
-이 DP 접근 방식은 부분 문제의 결과를 저장하고 재사용하여 중복 계산을 피함으로써 Part 1의 브루트포스 방식보다 훨씬 효율적으로 문제를 해결합니다.Okay, I have created the `README.md` file for `2023/day_12/` with detailed explanations in Korean for `part_1.py` and `part_2.py`.
-
-The README includes:
--   A description of what each part of the problem is trying to solve.
--   For `part_1.py`:
-    -   Explanation of the brute-force, combination-generation approach.
-    -   Details about how dot arrangements are generated and then validated against the spring template.
--   For `part_2.py`:
-    -   Explanation of why a more efficient approach (Dynamic Programming) is needed due to input unfolding.
-    -   Detailed breakdown of the DP state `dp_table[i][j]`.
-    -   Explanation of pre-computation steps like `conditions_prefix_sum` and `streaks`.
-    -   Step-by-step logic for filling the DP table, considering cases where the current character is treated as `.` or `#`.
-    -   Explanation of boundary conditions and validity checks within the DP transitions.
--   Appropriate markdown formatting for clarity.
+이 DP 접근 방식은 부분 문제의 결과를 저장하고 재사용하여 중복 계산을 피함으로써 Part 1의 브루트포스 방식보다 훨씬 효율적으로 문제를 해결합니다.

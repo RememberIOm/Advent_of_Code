@@ -61,9 +61,4 @@ Part 2에서는 Part 1과 동일한 스크래치 카드를 사용하지만, 점�
 
 4.  **실행 흐름 (`cal_num` 함수 내)**:
     *   먼저 모든 원본 카드에 대해 `match_card` (Part 2 버전)를 호출하여 각 카드별 일치 개수를 `matched_score` 리스트에 저장합니다.
-    *   이 `matched_score` 리스트를 `duplicate_card` 함수에 전달하여 최종 카드 총 개수를 계산하고 반환합니다.The `README.md` file for `2023/day_4/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-- `part_1.py` calculates points for scratchcards based on matching numbers (`2^(matches-1)`).
-- `part_2.py` calculates the total number of scratchcards (originals + copies) won, where matches on a card earn copies of subsequent cards.
-
-I have now created the `2023/day_4/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+    *   이 `matched_score` 리스트를 `duplicate_card` 함수에 전달하여 최종 카드 총 개수를 계산하고 반환합니다.

@@ -73,11 +73,4 @@ Part 2는 Part 1과 유사하지만, 팽창 규칙이 다릅니다. 완전히 �
 7.  **총합 계산**:
     *   모든 은하 쌍에 대해 계산된 이 사용자 정의 맨해튼 거리들의 총합을 반환합니다.
 
-이 방식은 실제로 거대한 배열을 메모리에 생성하지 않고도 큰 팽창 효과를 정확하게 시뮬레이션하여 효율적으로 문제를 해결합니다.Okay, I have created the `README.md` file for `2023/day_11/` with the detailed explanations for `part_1.py` and `part_2.py` in Korean.
-
-The README includes:
-- A description of the problem each part is trying to solve.
-- A step-by-step explanation of the algorithm and logic used in the Python code.
-- How Part 1 handles expansion by literally inserting rows/columns.
-- How Part 2 handles massive expansion by inserting "marker" rows/columns with a special value (`EXPAND_SIZE`) and using a custom distance calculation that sums costs from a `distance_map`. This map assigns a cost of 1 to regular cells and `EXPAND_SIZE` to marker cells, effectively simulating the million-fold expansion without creating a giant array.
-- Appropriate markdown formatting.
+이 방식은 실제로 거대한 배열을 메모리에 생성하지 않고도 큰 팽창 효과를 정확하게 시뮬레이션하여 효율적으로 문제를 해결합니다.

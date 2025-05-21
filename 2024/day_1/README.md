@@ -84,24 +84,4 @@ Part 2는 `left_nums`의 각 숫자에 대해, 해당 숫자가 `right_nums` 리
         *   총합: `10 + 8 + 0 = 18`.
 5.  총합: 위 예시에서는 0.
 
-**중요**: 코드의 `map(sorted, (left_nums, right_nums))` 부분은 각 줄의 원래 쌍을 유지하지 않고, 전체 왼쪽 숫자 목록과 전체 오른쪽 숫자 목록을 각각 정렬한 후 처리합니다. 이 README는 코드의 실제 동작을 기반으로 작성되었습니다.The `README.md` file for `2024/day_1/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Input Parsing (Common):** Both scripts first separate the input lines into a list of all first numbers (`left_nums`) and a list of all second numbers (`right_nums`).
--   **Crucial Sorting Step (Common):** Both scripts then sort `left_nums` and `right_nums` independently. This means the original pairing from each input line is broken. The subsequent operations are performed on these sorted lists.
-
--   **Part 1:**
-    1.  After sorting `left_nums` and `right_nums` independently.
-    2.  It pairs the i-th element from the sorted `left_nums` with the i-th element from the sorted `right_nums`.
-    3.  Calculates the absolute difference for each such new pair.
-    4.  Sums these differences.
-
--   **Part 2:**
-    1.  After sorting `left_nums` and `right_nums` independently.
-    2.  It creates a frequency map of numbers in the sorted `right_nums`.
-    3.  For each number `L` in the sorted `left_nums`:
-        a.  It finds the frequency `F` of `L` in the (sorted) `right_nums` list.
-        b.  It calculates `L * F`.
-    4.  Sums these products. (The zipping with `right_nums` in the generator is only to control iteration count; the `right` value from the zip is not used in the product term).
-
-I have now created the `2024/day_1/README.md` file with detailed explanations of both solutions in Korean, reflecting this understanding of the code's operations, especially the impact of the independent sorting step. Markdown formatting is included.
+**중요**: 코드의 `map(sorted, (left_nums, right_nums))` 부분은 각 줄의 원래 쌍을 유지하지 않고, 전체 왼쪽 숫자 목록과 전체 오른쪽 숫자 목록을 각각 정렬한 후 처리합니다. 이 README는 코드의 실제 동작을 기반으로 작성되었습니다.

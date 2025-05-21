@@ -55,23 +55,4 @@ Part 2는 Part 1과 동일한 돌 변환 규칙을 따르지만, 훨씬 더 많�
     *   각 초기 `stone`에 대해 `applicable_rule(stone)` (초기 호출 시 `depth`는 0)을 호출합니다.
     *   각 초기 돌로부터 생성되는 최종 돌들의 총 개수를 모두 합산하여 반환합니다.
 
-이 재귀적 접근 방식과 메모이제이션을 통해, Part 2는 매우 많은 수의 잠재적 변환 경로를 효율적으로 탐색하고 각 초기 돌이 75세대 후에 몇 개의 돌로 이어지는지를 계산합니다.The `README.md` file for `2024/day_11/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Transformation Rules (Common to both):**
-    1.  `0` -> `1`
-    2.  Even-digit number `N` -> `first_half_of_N`, `second_half_of_N`
-    3.  Odd-digit number `N` -> `N * 2024`
-
--   **Part 1:**
-    -   Simulates the transformation of a list of stones for exactly 25 "blinks" (iterations).
-    -   In each blink, all stones from the previous state are transformed according to the rules, creating a new list of stones.
-    -   The result is the total count of stones after 25 blinks.
-
--   **Part 2:**
-    -   Calculates, for each initial stone, how many "descendant" stones it will produce after a process equivalent to 75 levels of transformation (depth).
-    -   Uses a recursive function `applicable_rule(stone, depth)` with memoization (`@cache`) to achieve this.
-    -   The base case for the recursion is when `depth == THRESHOLD (75)`, at which point a stone is considered to contribute `1` to the count.
-    -   The results from each initial stone are summed up.
-
-I have now created the `2024/day_11/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
+이 재귀적 접근 방식과 메모이제이션을 통해, Part 2는 매우 많은 수의 잠재적 변환 경로를 효율적으로 탐색하고 각 초기 돌이 75세대 후에 몇 개의 돌로 이어지는지를 계산합니다.

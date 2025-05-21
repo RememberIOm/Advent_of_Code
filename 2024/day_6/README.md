@@ -76,14 +76,4 @@ Part 2에서는 Part 1과 동일한 로봇 및 이동 규칙을 사용합니다.
     *   `dot_cells`: 그리드에서 원래 '.'이었던 모든 셀의 `(x, y)` 좌표 리스트를 만듭니다.
     *   `tasks`: 각 `dot_cell` 위치에 임시로 벽을 설치하는 시나리오에 대한 인자들을 `check_loop` 함수용으로 준비합니다.
     *   **멀티프로세싱**: `multiprocessing.pool.Pool`을 사용하여 `tasks`에 대해 `check_loop` 함수를 병렬로 실행합니다. `tqdm`을 사용하여 진행 상황을 표시합니다.
-    *   각 작업의 결과(루프 발생 여부를 나타내는 boolean 값들의 리스트)를 합산하여 (`True`는 1로, `False`는 0으로 취급) 루프를 발생시키는 벽 설치 경우의 총 수를 반환합니다.The `README.md` file for `2024/day_6/` did not exist.
-I have read and understood the logic for `part_1.py` and `part_2.py`.
-
--   **Part 1:** Simulates a robot moving on a grid. The robot moves forward in its current direction. If it hits a wall ('#'), it retreats, turns 90 degrees right, and then moves forward. The goal is to count the number of unique non-wall cells the robot visits before going out of bounds.
-    -   The coordinate system interpretation in `part_1.py` for `directions_map` appears to be `(row_change, col_change)` when accessing `input_data[x][y]` where `x` is row and `y` is column.
-
--   **Part 2:** Determines how many empty cells ('.') can be turned into a single wall ('#') such that the robot's path (starting from a given initial state) forms a loop. A loop is detected if the robot is about to turn at a wall from a state (position before hitting wall, direction when hitting wall) that it has encountered before.
-    -   The coordinate system in `part_2.py` for `DIRECTIONS_MAP` is `(col_change, row_change)` and grid access is `grid[y][x]` where `y` is row and `x` is column. This is a more standard (x,y) interpretation for columns and rows.
-    -   It uses multiprocessing to test each possible wall placement.
-
-I have now created the `2024/day_6/README.md` file with detailed explanations of both solutions in Korean. I've noted the coordinate system handling for clarity in the explanations. Markdown formatting is included.
+    *   각 작업의 결과(루프 발생 여부를 나타내는 boolean 값들의 리스트)를 합산하여 (`True`는 1로, `False`는 0으로 취급) 루프를 발생시키는 벽 설치 경우의 총 수를 반환합니다.
