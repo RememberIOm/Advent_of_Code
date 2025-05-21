@@ -1,0 +1,75 @@
+# 2023년 Day 9 Advent of Code 문제 풀이
+
+## 공통 함수 및 로직
+
+Part 1과 Part 2 솔루션은 다음 함수들을 공통으로 사용하거나 유사한 로직을 가집니다.
+
+1.  **`get_bottom(history)` 함수**:
+    *   입력으로 숫자 시퀀스 `history` (튜플)를 받습니다.
+    *   `history`의 인접한 요소들 간의 차이를 계산하여 새로운 시퀀스(튜플)를 반환합니다.
+    *   예: `history = (1, 3, 6, 10)` 이면, `(2, 3, 4)`를 반환합니다.
+
+2.  **`get_bottoms(history)` 함수**:
+    *   초기 `history` 시퀀스를 입력으로 받습니다.
+    *   `bottoms`라는 리스트를 초기화하고 첫 요소로 `history`를 추가합니다.
+    *   `bottoms` 리스트의 마지막 시퀀스가 모든 요소가 0이 될 때까지 다음을 반복합니다:
+        *   `get_bottom` 함수를 사용하여 `bottoms`의 마지막 시퀀스로부터 다음 차이 시퀀스를 계산합니다.
+        *   계산된 새 차이 시퀀스를 `bottoms` 리스트에 추가합니다.
+    *   모든 차이 시퀀스들의 리스트 (원본 `history`부터 모든 요소가 0인 시퀀스까지)를 반환합니다.
+    *   예: `history = (0, 3, 6, 9, 12, 15)`
+        *   `bottoms`는 `[(0, 3, 6, 9, 12, 15), (3, 3, 3, 3, 3), (0, 0, 0, 0)]`가 됩니다.
+
+## Part 1
+
+### 문제 설명
+
+Part 1에서는 각 숫자 시퀀스(history)에 대해 다음 값을 예측해야 합니다. 예측은 다음 단계를 통해 이루어집니다:
+1.  원본 시퀀스에서 시작하여, 인접한 숫자들 사이의 차이를 계산하여 새로운 시퀀스를 만듭니다.
+2.  이 새로운 시퀀스에 대해 다시 차이를 계산하는 과정을 반복하며, 모든 숫자가 0이 되는 시퀀스가 나올 때까지 계속합니다.
+3.  이렇게 생성된 모든 시퀀스들의 마지막 숫자를 사용하여 원래 시퀀스의 다음 값을 외삽(extrapolate)합니다. 모든 요소가 0인 시퀀스의 다음 값은 0입니다. 그 위 시퀀스의 다음 값은 현재 마지막 값에 바로 아래 시퀀스의 외삽된 다음 값을 더한 것입니다. 이 과정을 계속하면, 원본 시퀀스의 다음 값은 모든 생성된 시퀀스들의 마지막 값들의 합과 같습니다.
+
+각 입력 시퀀스에 대해 이렇게 예측된 다음 값들을 모두 합산하는 것이 목표입니다.
+
+### 풀이 방법 (`part_1.py`)
+
+1.  **`get_next_history(history)` 함수**:
+    *   주어진 `history`에 대해 `get_bottoms(history)`를 호출하여 모든 차이 시퀀스들의 리스트 `bottoms`를 얻습니다.
+    *   `bottoms` 리스트에 있는 각 시퀀스의 마지막 요소를 모두 합산합니다. 이 합이 원본 `history`의 다음 예측값입니다.
+    *   `sum(map(lambda bottom: bottom[-1], bottoms))`를 사용하여 계산합니다.
+
+2.  **`solution(input_data)` 함수**:
+    *   입력 데이터의 각 줄을 숫자 시퀀스(튜플)로 변환하여 `histories` 튜플을 생성합니다.
+    *   각 `history`에 대해 `get_next_history` 함수를 호출하여 예측된 다음 값을 계산합니다.
+    *   모든 예측된 값들의 합을 반환합니다.
+
+## Part 2
+
+### 문제 설명
+
+Part 2에서는 각 숫자 시퀀스(history)에 대해 이전 값을 예측해야 합니다. 예측 과정은 Part 1과 유사하게 차이 시퀀스를 생성하는 것으로 시작하지만, 외삽 방식이 다릅니다:
+1.  모든 요소가 0인 시퀀스의 이전 값은 0입니다.
+2.  그 위 시퀀스의 이전 값은 현재 첫 번째 값에서 바로 아래 시퀀스의 외삽된 이전 값을 뺀 것입니다.
+3.  이 과정을 계속하면, 원본 시퀀스의 이전 값은 생성된 모든 시퀀스들의 첫 번째 값들을 번갈아 더하고 빼는 형태로 계산됩니다 (`첫번째_시퀀스[0] - 두번째_시퀀스[0] + 세번째_시퀀스[0] - ...`).
+
+각 입력 시퀀스에 대해 이렇게 예측된 이전 값들을 모두 합산하는 것이 목표입니다.
+
+### 풀이 방법 (`part_2.py`)
+
+1.  **`get_prev_history(history)` 함수**:
+    *   주어진 `history`에 대해 `get_bottoms(history)`를 호출하여 모든 차이 시퀀스들의 리스트 `bottoms`를 얻습니다.
+    *   `bottoms` 리스트의 각 시퀀스 `h`와 그 인덱스 `idx`에 대해, `h[0]` (시퀀스의 첫 번째 요소)를 가져옵니다.
+    *   인덱스 `idx`가 짝수이면 `h[0]`을 더하고, 홀수이면 `h[0]`을 <0xE<0xB<0x8 빼는 방식으로 합계를 계산합니다.
+    *   `sum(h[0] if idx % 2 == 0 else -h[0] for idx, h in enumerate(bottoms))`를 사용하여 계산합니다.
+
+2.  **`solution(input_data)` 함수**:
+    *   입력 데이터를 Part 1과 동일하게 파싱하여 `histories` 튜플을 생성합니다.
+    *   각 `history`에 대해 `get_prev_history` 함수를 호출하여 예측된 이전 값을 계산합니다.
+    *   모든 예측된 값들의 합을 반환합니다.The `README.md` file for `2023/day_9/` did not exist.
+I have read and understood the logic for `part_1.py` and `part_2.py`.
+
+-   **Shared Logic:** Both parts use `get_bottom(history)` to calculate differences between adjacent elements and `get_bottoms(history)` to create a list of these difference sequences down to an all-zero sequence.
+-   **Part 1 (`get_next_history`):** Extrapolates the *next* value in a history by summing the last elements of all difference sequences.
+-   **Part 2 (`get_prev_history`):** Extrapolates the *previous* value in a history by calculating an alternating sum of the first elements of all difference sequences (`bottoms[0][0] - bottoms[1][0] + bottoms[2][0] - ...`).
+-   The `solution` functions in both parts parse the input histories and sum the results of their respective extrapolation functions.
+
+I have now created the `2023/day_9/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.

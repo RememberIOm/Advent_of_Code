@@ -1,0 +1,84 @@
+# 2023년 Day 7 Advent of Code 문제 풀이
+
+## 공통 구조
+
+Part 1과 Part 2는 유사한 전체 구조를 가집니다. 각 손(hand)의 순위를 매기고, 순위에 따라 각 손의 베팅 금액(bid)을 곱한 총 상금을 계산합니다.
+
+1.  **입력 파싱**: 각 줄에서 카드 문자열과 베팅 금액을 읽어 `(카드_문자열, 베팅_금액)` 튜플의 리스트로 저장합니다.
+2.  **손의 기본 강도(패 종류) 결정**: 각 카드 문자열에 대해 `card_power` 함수를 호출하여 패의 종류(예: 파이브 카드, 포 카드 등)에 따른 기본 강도를 결정합니다.
+3.  **패 종류별 그룹화**: 패의 종류(총 7가지 강도)에 따라 손들을 그룹화합니다. `card_power_list`는 각 패 종류별로 손들의 리스트를 담는 리스트(또는 튜플의 리스트)입니다.
+4.  **그룹 내 정렬 (2차 정렬 규칙)**: 같은 패 종류를 가진 그룹 내에서는 `high_card_comp` 비교 함수를 사용하여 손들을 정렬합니다. 이 함수는 패의 첫 번째 카드부터 순서대로 비교하여 더 높은 카드를 가진 손이 더 강한 것으로 판단합니다.
+5.  **전체 목록 생성 및 최종 순위 부여**: 정렬된 각 그룹을 순서대로 이어붙여 전체 손 목록을 만듭니다. 이 목록은 가장 약한 손부터 가장 강한 손 순서로 정렬됩니다. 각 손에는 1부터 시작하는 순위(rank)가 부여됩니다.
+6.  **총 상금 계산**: 각 손의 `베팅_금액 * 순위`를 계산하고, 이들의 총합을 구합니다.
+
+## Part 1
+
+### 문제 설명
+
+Part 1에서는 포커와 유사한 카드 게임의 손들을 받아 순위를 매깁니다. 각 손은 5장의 카드로 구성됩니다. 패의 종류는 다음과 같습니다(강한 순서대로):
+*   파이브 카드 (Five of a kind): 같은 종류 카드 5장
+*   포 카드 (Four of a kind): 같은 종류 카드 4장
+*   풀 하우스 (Full house): 같은 종류 카드 3장 + 같은 종류 카드 2장
+*   쓰리 카드 (Three of a kind): 같은 종류 카드 3장
+*   투 페어 (Two pair): 같은 종류 카드 2장 + 다른 종류로 같은 카드 2장
+*   원 페어 (One pair): 같은 종류 카드 2장
+*   하이 카드 (High card): 위 어떤 종류에도 해당하지 않음
+
+같은 종류의 패인 경우, 손을 구성하는 카드를 첫 번째부터 비교하여 순위를 결정합니다. 카드 개별 순서는 A (가장 강함), K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, 2 (가장 약함) 순입니다. 최종 목표는 각 손의 베팅 금액과 순위를 곱한 값의 총합을 구하는 것입니다.
+
+### 풀이 방법 (`part_1.py`)
+
+1.  **`card_power(card)` 함수**:
+    *   입력된 `card` 문자열(예: "T55J5")에서 각 카드 문자의 빈도수를 계산합니다 (예: `{'T': 1, '5': 3, 'J': 1}`).
+    *   계산된 빈도수들의 값을 정렬하여 튜플로 만듭니다 (예: `(1, 1, 3)`).
+    *   이 빈도수 튜플을 미리 정의된 `card_power_dict`에 매핑하여 패의 기본 강도(0부터 6까지의 정수)를 결정합니다.
+        *   `(5,)`: 파이브 카드 (강도 6)
+        *   `(1, 4)`: 포 카드 (강도 5)
+        *   `(2, 3)`: 풀 하우스 (강도 4)
+        *   `(1, 1, 3)`: 쓰리 카드 (강도 3)
+        *   `(1, 2, 2)`: 투 페어 (강도 2)
+        *   `(1, 1, 1, 2)`: 원 페어 (강도 1)
+        *   `(1, 1, 1, 1, 1)`: 하이 카드 (강도 0)
+    *   결정된 강도 값을 반환합니다.
+
+2.  **`high_card_comp(a, b)` 함수**:
+    *   두 손 `a`와 `b` (`(카드_문자열, 베팅_금액)` 튜플)의 카드 문자열을 첫 번째 문자부터 순서대로 비교합니다.
+    *   `high_card_dict`는 각 카드 문자에 대응하는 숫자 값(A:14, K:13, ..., J:11, ..., 2:2)을 정의합니다.
+    *   두 카드의 문자가 다르면, 해당 문자의 숫자 값을 비교하여 정렬 순서를 결정합니다 (`a_값 - b_값` 반환).
+
+## Part 2
+
+### 문제 설명
+
+Part 2는 Part 1과 규칙이 유사하지만, 'J' 카드가 조커(Joker)로 취급됩니다. 조커는 어떤 카드로든 변할 수 있어 가장 강력한 패를 만드는 데 사용됩니다. 패의 종류를 결정할 때는 조커를 최적으로 활용합니다.
+그러나, 같은 종류의 패 사이에서 순위를 결정하기 위해 개별 카드를 비교할 때는 'J' 카드가 가장 약한 카드(A, K, Q, T, 9, ..., 2 다음으로 약함)로 취급됩니다.
+
+### 풀이 방법 (`part_2.py`)
+
+1.  **`card_power(card)` 함수 (Part 2 버전)**:
+    *   카드 내 문자 빈도수를 계산하는 것은 Part 1과 동일합니다.
+    *   조커('J')의 개수 `j_num`을 따로 세어둡니다.
+    *   만약 조커가 있다면 (`j_num > 0`):
+        *   빈도수 리스트에서 조커의 빈도수를 제거합니다.
+        *   이 `j_num` (조커의 개수)을 나머지 카드 중 가장 높은 빈도수를 가진 카드의 빈도수에 더합니다. (예: "T55JJ" -> '5'가 2개, 'T'가 1개, 'J'가 2개. 조커 2개를 '5'에 더하면 '5'가 4개가 되어 포 카드가 됨).
+        *   만약 모든 카드가 조커("JJJJJ")라면, 결과적으로 파이브 카드가 됩니다 (빈도수 리스트는 `[5]`가 됨).
+    *   이렇게 조커를 최적으로 활용하여 조정한 빈도수 리스트(튜플로 변환)를 Part 1과 동일한 `card_power_dict`에 사용하여 패의 기본 강도를 결정합니다.
+
+2.  **`high_card_comp(a, b)` 함수 (Part 2 버전)**:
+    *   Part 1과 동일한 방식으로 두 손의 카드를 순서대로 비교합니다.
+    *   단, `high_card_dict`에서 'J' 카드의 값이 1로 설정되어, 다른 모든 숫자/문자 카드보다 약하게 취급됩니다 (A:14, K:13, ..., T:10, ..., 2:2, J:1).
+
+나머지 `solution` 함수의 구조와 총 상금 계산 방식은 Part 1과 동일합니다. 조커 규칙의 적용으로 인해 `card_power`와 `high_card_comp` 함수 내부의 로직만 변경됩니다.The `README.md` file for `2023/day_7/` did not exist.
+I have read and understood the logic for `part_1.py` and `part_2.py`.
+
+-   **Shared Structure:** Both parts rank poker-like hands. They group hands by primary type (e.g., Five of a Kind, Full House), then sort within those groups using a secondary rule (high card comparison from left to right). The final list is ordered from weakest to strongest hand, and total winnings are calculated as `sum(rank * bid)`.
+
+-   **Part 1:** Standard poker hand evaluation. 'J' is a normal Jack.
+    -   `card_power`: Counts card frequencies to determine hand type (Five of a kind, Four of a kind, etc.).
+    -   `high_card_comp`: Compares cards A > K > Q > J > T > ... > 2.
+
+-   **Part 2:** 'J' cards are Jokers.
+    -   `card_power`: Jokers are used to form the best possible hand type. The count of Jokers is added to the count of the most frequent non-Joker card (or forms a group of Jokers if all cards are Jokers).
+    -   `high_card_comp`: For tie-breaking, 'J' is the weakest individual card (A > K > ... > 2 > J).
+
+I have now created the `2023/day_7/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.

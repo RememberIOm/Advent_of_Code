@@ -1,0 +1,62 @@
+# 2024년 Day 12 Advent of Code 문제 풀이
+
+## Part 1
+
+### 문제 설명
+
+이 문제의 목표는 문자들로 이루어진 그리드(맵)에서 특정 규칙에 따라 "가격(price)"을 계산하는 것입니다. 그리드는 여러 개의 연결된 영역으로 구성될 수 있으며, 각 영역은 동일한 문자로 채워진 셀들의 집합입니다.
+
+각 영역에 대해 다음을 계산합니다:
+1.  **영역의 크기**: 해당 영역에 포함된 셀의 총 개수입니다.
+2.  **영역의 경계(edge) 수**: 해당 영역의 셀에 인접해 있지만, 영역과 다른 문자를 가진 셀들의 총 개수입니다. (인접은 상, 하, 좌, 우 4방향을 의미합니다.)
+
+한 영역의 "가격"은 `(영역의 크기) * (영역의 경계 수)`로 정의됩니다.
+최종 목표는 그리드 내의 모든 고유한 연결 영역들의 가격을 계산하고, 이 가격들의 총합을 구하는 것입니다. 각 셀은 단 하나의 영역에만 속해야 합니다.
+
+### 풀이 방법 (`part_1.py`)
+
+제공된 `part_1.py` 코드는 다음 단계를 통해 문제를 해결합니다.
+
+1.  **입력 데이터 파싱 (`solution` 함수 내)**:
+    *   입력 데이터 (`input_data`)는 각 줄이 그리드의 한 행을 나타내는 문자열 리스트입니다.
+    *   `maps` 딕셔너리를 생성하여 그리드 정보를 저장합니다. 키는 `(x, y)` 좌표 튜플이고, 값은 해당 위치의 문자입니다.
+
+2.  **`get_price(position, value, maps, visited, DERIVATIVES)` 함수**:
+    *   이 함수는 특정 `position`에서 시작하여 동일한 `value`를 가진 연결된 영역을 찾고, 그 영역의 "가격"을 계산합니다.
+    *   `visited`: 전역적으로 방문한 셀들을 추적하는 `set`입니다. 특정 셀이 이미 다른 영역의 일부로 처리되었다면 중복 계산을 방지합니다.
+    *   `DERIVATIVES`: `((1, 0), (0, 1), (-1, 0), (0, -1))`로 정의되어 상, 하, 좌, 우 4방향 이동을 나타냅니다.
+    *   **영역 탐색 (BFS/Flood Fill)**:
+        *   `edges`: 현재 영역의 경계에 있는 셀들의 좌표를 저장할 리스트입니다.
+        *   `area`: 현재 영역에 속하는 셀들의 좌표를 저장할 `set`입니다. 시작 `position`으로 초기화됩니다.
+        *   `progress`: BFS(너비 우선 탐색)를 위한 `deque`이며, `(position, value)`로 초기화됩니다.
+        *   시작 `position`을 `visited`에 추가합니다.
+        *   `progress` 큐가 빌 때까지 다음을 반복합니다:
+            *   큐에서 `(x, y)` 좌표와 해당 `value`를 꺼냅니다.
+            *   4방향 인접 셀(`new_position`, `new_value`)을 확인합니다:
+                *   `new_value`가 현재 영역의 `value`와 동일하고, `new_position`이 아직 `visited`에 없다면:
+                    *   `new_position`은 현재 영역의 일부입니다. `progress` 큐에 추가하고, `visited` 및 `area`에도 추가합니다.
+                *   `new_value`가 현재 영역의 `value`와 다르다면 (그리고 `new_position`이 맵 범위 내에 있다면):
+                    *   `new_position`은 현재 영역의 경계(edge) 셀입니다. `edges` 리스트에 추가합니다.
+    *   탐색이 완료되면, `len(edges) * len(area)`를 계산하여 이 영역의 가격을 반환합니다.
+
+3.  **전체 가격 계산 (`solution` 함수 내)**:
+    *   `visited` 셋을 초기화합니다.
+    *   `price` 리스트를 초기화하여 각 영역의 계산된 가격을 저장합니다.
+    *   `maps` 딕셔너리의 모든 `(position, value)` 아이템에 대해 반복합니다:
+        *   만약 현재 `position`이 이미 `visited`에 있다면, 건너뜁니다 (이미 다른 영역의 일부로 처리됨).
+        *   그렇지 않다면, `get_price(position, value, maps, visited, DERIVATIVES)`를 호출하여 현재 `position`에서 시작하는 새로운 연결 영역의 가격을 계산합니다. 이 호출 과정에서 해당 영역의 모든 셀들이 `visited`에 추가됩니다.
+        *   반환된 가격을 `price` 리스트에 추가합니다.
+    *   `price` 리스트에 저장된 모든 영역의 가격들의 총합 (`sum(price)`)을 반환합니다.
+
+이 알고리즘은 그리드의 각 셀을 한 번씩만 방문하여, 동일한 문자로 이루어진 각 연결 영역을 식별하고, 각 영역의 크기와 경계 수를 기반으로 가격을 계산한 뒤, 이들의 총합을 구하는 방식으로 동작합니다.The `README.md` file for `2024/day_12/` did not exist.
+I have read and understood the logic for `part_1.py`.
+
+The problem solved by `part_1.py` is:
+1.  Parse a grid of characters.
+2.  Iterate through each cell of the grid. If a cell hasn't been visited yet:
+    a.  Perform a BFS/flood-fill starting from this cell to find all connected cells with the same character. This forms an "area". Mark all cells in this area as visited (globally).
+    b.  During the BFS, identify all "edge" cells: cells that are adjacent (4-directionally) to the area but have a different character.
+    c.  Calculate a "price" for this area as `(number of cells in the area) * (number of edge cells)`.
+3.  Sum the prices calculated for all such distinct areas in the grid.
+
+I have now created the `2024/day_12/README.md` file with a detailed explanation of this solution in Korean, including problem description, algorithmic approach, and markdown formatting. Since only `part_1.py` was provided, the README addresses only Part 1.
