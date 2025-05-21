@@ -1,0 +1,69 @@
+# 2023년 Day 8 Advent of Code 문제 풀이
+
+## Part 1
+
+### 문제 설명
+
+Part 1에서는 네트워크 노드 맵과 좌/우 이동 경로가 주어집니다. 각 노드는 두 개의 다른 노드(왼쪽과 오른쪽)로 연결됩니다. "AAA" 노드에서 시작하여 주어진 경로 문자열('L' 또는 'R')을 반복적으로 따라 이동합니다. 목표는 "ZZZ" 노드에 도달하기까지 필요한 총 단계 수를 계산하는 것입니다.
+
+예를 들어, 경로가 "RL"이고 맵이 다음과 같다면:
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+...
+
+1.  AAA에서 시작, 경로의 첫 번째는 'R' -> CCC로 이동 (1단계)
+2.  CCC에서, 경로의 두 번째는 'L' -> ZZZ로 이동 (2단계)
+"ZZZ"에 도달했으므로 2단계가 소요됩니다. 경로는 필요에 따라 반복 사용됩니다.
+
+### 풀이 방법 (`part_1.py`)
+
+1.  **입력 파싱 (`solution` 함수)**:
+    *   입력 데이터의 첫 번째 줄은 이동 경로 문자열 `route` (예: "LRLRRR")입니다.
+    *   두 번째 줄은 비어 있으며, 세 번째 줄부터는 네트워크 노드 정의입니다.
+    *   각 노드 정의 라인(예: "AAA = (BBB, CCC)")을 파싱하여 `graph` 딕셔너리를 생성합니다. 이 딕셔너리에서 키는 현재 노드 이름(예: "AAA")이고, 값은 `[왼쪽_노드, 오른쪽_노드]` 형태의 리스트(예: `["BBB", "CCC"]`)입니다.
+
+2.  **경로 탐색 (`solution` 함수)**:
+    *   `steps` 변수를 0으로 초기화하여 총 이동 단계를 계산합니다.
+    *   `cur_node` 변수를 시작 노드 "AAA"로 설정합니다.
+    *   무한 루프 (`while True`)를 시작하여 "ZZZ"에 도달할 때까지 다음을 반복합니다:
+        *   현재 이동할 방향 `cur_move`를 `route` 문자열에서 가져옵니다. `steps % len(route)`를 사용하여 경로 문자열을 순환적으로 사용합니다.
+        *   `cur_move`가 'L'이면 `graph[cur_node][0]` (왼쪽 노드)로, 'R'이면 `graph[cur_node][1]` (오른쪽 노드)로 `cur_node`를 업데이트합니다.
+        *   `steps`를 1 증가시킵니다.
+        *   만약 `cur_node`가 "ZZZ"가 되면, 루프를 종료하고 현재까지의 `steps` 값을 반환합니다.
+
+## Part 2
+
+### 문제 설명
+
+Part 2에서는 여러 "유령"이 동시에 네트워크를 탐색합니다. 각 유령은 이름이 'A'로 끝나는 노드에서 시작합니다. 모든 유령은 Part 1과 동일한 좌/우 이동 경로를 동시에 따릅니다. 목표는 모든 유령이 동시에 이름이 'Z'로 끝나는 노드에 도달하기까지 필요한 총 단계 수를 찾는 것입니다.
+
+### 풀이 방법 (`part_2.py`)
+
+1.  **입력 파싱 (`solution` 함수)**:
+    *   Part 1과 유사하게 `route` 문자열과 `graph` 딕셔너리를 파싱합니다.
+    *   `graph`를 파싱하는 동안, 노드 이름이 'A'로 끝나는 모든 노드를 `ghosts` 리스트에 시작점으로 저장합니다.
+
+2.  **각 유령의 'Z' 노드 도달 주기 계산 (`get_cycle_len` 함수)**:
+    *   각 `ghost` 시작 노드에 대해 `get_cycle_len(ghost, graph, route)` 함수를 호출합니다.
+    *   이 함수는 특정 `ghost`가 시작점에서 이름이 'Z'로 끝나는 노드에 처음 도달하기까지 필요한 단계 수를 계산합니다.
+    *   작동 방식은 Part 1의 경로 탐색과 유사합니다:
+        *   `steps`를 0으로, `cur_node`를 `ghost` 시작점으로 초기화합니다.
+        *   `cur_node`의 마지막 글자가 'Z'가 될 때까지 경로를 따라 이동하며 `steps`를 증가시킵니다.
+        *   'Z'로 끝나는 노드에 도달하면 해당 `steps`를 반환합니다.
+    *   주석 처리된 코드와 주석에 따르면, 문제의 입력 데이터는 각 유령이 'A'로 끝나는 시작점에서 'Z'로 끝나는 노드까지 가는 데 걸리는 단계 수와, 그 'Z' 노드에서 다시 같은 'Z' 노드로 (또는 다른 'Z' 노드로 간주될 수 있는 주기적인 'Z' 노드) 돌아오는 데 걸리는 단계 수가 동일한 특성을 가집니다. 따라서 첫 번째 'Z' 노드 도달 단계 수 자체가 해당 유령의 주기가 됩니다.
+
+3.  **최소공배수(LCM) 계산 (`solution` 함수)**:
+    *   `ghosts_cycle_len`에는 각 유령이 'Z' 노드에 도달하기까지 걸리는 단계 수(즉, 각 유령의 주기)가 저장됩니다.
+    *   모든 유령이 동시에 'Z' 노드에 위치하려면, 각 유령의 주기의 최소공배수(LCM)만큼의 단계가 필요합니다.
+    *   `math.lcm(*ghosts_cycle_len)`를 사용하여 이 LCM 값을 계산하고 반환합니다.
+
+이 접근 방식은 각 유령의 경로가 독립적인 주기를 가지며, 모든 주기가 동시에 맞아떨어지는 지점을 찾는 문제로 귀결되기 때문에 유효합니다.The `README.md` file for `2023/day_8/` did not exist.
+I have read and understood the logic for `part_1.py` and `part_2.py`.
+
+-   **Part 1:** Navigates a network map based on a sequence of 'L'/'R' instructions, starting from "AAA" and counting steps until "ZZZ" is reached. The instruction sequence is repeated if necessary.
+-   **Part 2:** Multiple "ghosts" start simultaneously at all nodes ending in 'A'. They follow the same instructions. The goal is to find when all ghosts are simultaneously on nodes ending in 'Z'. This is solved by:
+    1.  Finding the number of steps for each individual ghost to reach a node ending in 'Z'. The problem's structure implies this step count is also the cycle length for that ghost to reach a 'Z' node again.
+    2.  Calculating the Least Common Multiple (LCM) of these step counts for all ghosts.
+
+I have now created the `2023/day_8/README.md` file with detailed explanations of both solutions in Korean, including problem descriptions, algorithmic approaches, and markdown formatting.
